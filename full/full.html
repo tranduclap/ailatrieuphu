@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI LÀ TRIỆU PHÚ - Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background-image: url("img3.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto;
+            background-attachment: fixed;
+        }
+
+        #point {
+            width: 320px;
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            color: #FFD700;
+            font-size: 2.2rem;
+            font-weight: 600;
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
+        }
+
+        #point:hover {
+            transform: scale(1.05);
+        }
+
+        #styleTime, #timeCountDown {
+            background: linear-gradient(135deg, #32CD32, #1B5E20);
+            font-size: 1.8rem;
+            font-weight: 600;
+            width: 380px;
+            border-radius: 15px;
+            height: 60px;
+            margin: 25px auto;
+            color: #fff;
+            text-align: center;
+            line-height: 60px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        #question {
+            background: linear-gradient(145deg, rgba(173, 216, 230, 0.9), rgba(135, 206, 235, 0.8));
+            width: 650px;
+            min-height: 120px;
+            text-align: center;
+            border-radius: 25px;
+            margin: 60px auto 30px auto;
+            padding: 25px;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #question.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        #question:hover {
+            transform: translateY(-5px);
+        }
+
+        #answer {
+            width: 800px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px 80px;
+            justify-items: center;
+            align-items: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 20px;
+        }
+
+        button {
+            width: 350px;
+            height: 90px;
+            padding: 15px;
+            font-size: 1.7rem;
+            font-weight: 600;
+            background: linear-gradient(145deg, #b0c4de, #e6e6fa);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+        }
+
+        button.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        button:hover {
+            background: linear-gradient(145deg, #32CD32, #00FF7F);
+            color: #fff;
+            transform: translateY(-8px) scale(1.08);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .an_ {
+            width: 350px;
+            padding: 15px;
+            text-align: center;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+            font-size: 1.7rem;
+            color: #1a1a1a;
+            transition: transform 0.3s ease;
+        }
+
+        .an_:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #point {
+                width: 280px;
+                font-size: 1.8rem;
+            }
+
+            #styleTime, #timeCountDown {
+                width: 320px;
+                font-size: 1.6rem;
+                height: 50px;
+                line-height: 50px;
+            }
+
+            #question {
+                width: 90%;
+                font-size: 1.8rem;
+                padding: 20px;
+            }
+
+            #answer {
+                width: 90%;
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 15px;
+            }
+
+            button, .an_ {
+                width: 100%;
+                font-size: 1.5rem;
+                height: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #point {
+                width: 240px;
+                font-size: 1.6rem;
+            }
+
+            #styleTime, #timeCountDown {
+                width: 280px;
+                font-size: 1.4rem;
+                height: 45px;
+                line-height: 45px;
+            }
+
+            #question {
+                font-size: 1.6rem;
+                margin: 40px auto 20px auto;
+            }
+
+            #answer {
+                gap: 30px;
+            }
+
+            button, .an_ {
+                height: 70px;
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="point">Điểm: 0</div>
+<div id="styleTime">
+    <span id="timeCountDown">Thời gian: 30</span>
+</div>
+<div id="question">Đây là câu hỏi mẫu. Bạn chọn đáp án nào?</div>
+<div id="answer">
+    <button id="answer_1" class="an_" onclick="checkAnswer('answer_1')">Đáp án A</button>
+    <button id="answer_2" class="an_" onclick="checkAnswer('answer_2')">Đáp án B</button>
+    <button id="answer_3" class="an_" onclick="checkAnswer('answer_3')">Đáp án C</button>
+    <button id="answer_4" class="an_" onclick="checkAnswer('answer_4')">Đáp án D</button>
+</div>
+<div id="result">Bonus: 0</div>
+
+<script>
+    class Question {
+        constructor(content, answer, correctAnswer, money) {
+            this.content = content;
+            this.answer = answer;
+            this.correctAnswer = correctAnswer;
+            this.money = money;
+        }
+
+        checkAnswer(answer) {
+            return answer === this.correctAnswer;
+        }
+    }
+
+    function music() {
+        musicBackground = new Audio("sound/start.mp3");
+    }
+    music();
+    musicBackground.play();
+
+    let timeCount = 30;
+    let message;
+    let currentPoints = 0; // Biến để lưu điểm hiện tại của mốc câu hỏi
+
+    let timeID = setInterval(function () {
+        document.getElementById('timeCountDown').innerHTML = timeCount + " giây";
+        timeCount--;
+        countdown();
+    }, 1000);
+
+    function countdown() {
+        let styles = document.getElementById('styleTime');
+        let styleTime = document.getElementById('timeCountDown');
+        if (timeCount < 0) {
+            clearInterval(timeID);
+            Swal.fire({
+                title: "Hết Thời Gian!",
+                text: "Bạn đã hết thời gian trả lời.",
+                icon: "error"
+            }).then(() => {
+                reload();
+            });
+        }
+        if (timeCount < 5) {
+            styles.style.background = 'linear-gradient(135deg, #ff4444, #b71c1c)';
+            styleTime.style.color = '#fff';
+        } else {
+            styles.style.background = 'linear-gradient(135deg, #32CD32, #1B5E20)';
+            styleTime.style.color = '#fff';
+        }
+    }
+
+    let question1 = new Question("Câu 1: Quốc gia nào có hình dáng giống chiếc ủng trên bản đồ?", ["A.Pháp", "B.Ý", "C.Tây Ban Nha", "D.Đức"], "B.Ý", "200.000 VNĐ");
+    let question2 = new Question("Câu 2: Trái đất quay quanh Mặt Trời theo quỹ đạo nào?", ["A.Tròn đều", "B.Elip", "C.Hình vuông", "D.Hình tam giác"], "B.Elip", "400.000 VNĐ");
+    let question3 = new Question("Câu 3: Bộ phim hoạt hình nào nổi tiếng với nhân vật chuột Mickey?", ["A.DreamWorks", "B.Disney", "C.Pixar", "D.Universal"], "B.Disney", "600.000 VNĐ");
+    let question4 = new Question("Câu 4: Động vật nào được biết đến với khả năng thay đổi màu da để ngụy trang?", ["A.Cá voi", "B.Châu chấu", "C.Tắc kè", "D.Cá heo"], "C.Tắc kè", "1.000.000 VNĐ");
+    let question5 = new Question("Câu 5: Vịnh Hạ Long thuộc tỉnh nào của Việt Nam?", ["A.Quảng Ninh", "B.Thanh Hóa", "C.Ninh Bình", "D.Hải Phòng"], "A.Quảng Ninh", "2.000.000 VNĐ");
+    let question6 = new Question("Câu 6: 'Dế mèn phiêu lưu ký' là tác phẩm nổi tiếng của ai?", ["A.Tô Hoài", "B.Nguyễn Nhật Ánh", "C.Ngô Tất Tố", "D.Nam Cao"], "A.Tô Hoài", "3.000.000 VNĐ");
+    let question7 = new Question("Câu 7: Trong thể thao, 'Offside' (việt vị) là thuật ngữ thường gặp trong môn nào?", ["A.Bóng chuyền", "B.Bóng đá", "C.Bóng rổ", "D.Bóng bàn"], "B.Bóng đá", "6.000.000 VNĐ");
+    let question8 = new Question("Câu 8: Người được coi là 'Bà chúa thơ Nôm' trong văn học Việt Nam là ai?", ["A.Hồ Xuân Hương", "B.Nguyễn Du", "C.Bà Huyện Thanh Quan", "D.Nguyễn Trãi"], "A.Hồ Xuân Hương", "10.000.000 VNĐ");
+    let question9 = new Question("Câu 9: Đơn vị đo cường độ dòng điện là gì?", ["A.Volt", "B.Ampere", "C.Ohm", "D.Watt"], "B.Ampere", "14.000.000 VNĐ");
+    let question10 = new Question("Câu 10: Loài chim nào có thể bắt chước giọng nói của con người?", ["A.Chim bồ câu", "B.Chim sẻ", "C.Chim vẹt", "D.Chim hải âu"], "C.Chim vẹt", "22.000.000 VNĐ");
+    let question11 = new Question("Câu 11: Tác phẩm nào sau đây của Shakespeare?", ["A.Tam quốc diễn nghĩa", "B.Romeo và Juliet", "C.Chiến tranh và hòa bình", "D.Trà Long"], "B.Romeo và Juliet", "30.000.000 VNĐ");
+    let question12 = new Question("Câu 12: Tế bào nào trong cơ thể người mang thông tin di truyền?", ["A.Bạch cầu", "B.Tế bào thần kinh", "C.ADN", "D.Tiểu cầu"], "C.ADN", "40.000.000 VNĐ");
+    let question13 = new Question("Câu 13: 'Great Wall' là tên tiếng Anh của kỳ quan nào?", ["A.Kim Tự Tháp", "B.Vạn Lý Trường Thành", "C.Đấu trường La Mã", "D.Vườn treo Babylon"], "B.Vạn Lý Trường Thành", "60.000.000 VNĐ");
+    let question14 = new Question("Câu 14: Nốt nhạc cao nhất trong hệ thống ký hiệu âm nhạc cổ điển là nốt gì?", ["A.Sol", "B.Si", "C.Đô cao", "D.Fa cao"], "C.Đô cao", "85.000.000 VNĐ");
+    let question15 = new Question("Câu 15: Định luật Archimedes liên quan đến lĩnh vực nào?", ["A.Quang học", "B.Thủy lực", "C.Nhiệt động lực học", "D.Cơ học thiên thể"], "B.Thủy lực", "150.000.000 VNĐ");
+
+    let questions = [question1, question2, question3, question4, question5, question6, question7, question8, question9, question10, question11, question12, question13, question14, question15];
+    let getQuestion = document.getElementById('question');
+    showQuestion(question1);
+
+    function next(index) {
+        index++;
+        showQuestion(questions[index]);
+    }
+
+    function showQuestion(question_1) {
+        timeCount = 30;
+        getQuestion.innerHTML = question_1.content;
+        getQuestion.setAttribute("questionScreen", questions.indexOf(question_1));
+        for (let i = 0; i < 4; i++) {
+            let getaswId = document.getElementById('answer_' + (i + 1));
+            getaswId.innerHTML = question_1.answer[i];
+        }
+    }
+
+    let index = 0;
+
+    async function checkAnswer(id) {
+        let answer = document.getElementById(id).innerHTML;
+        let getQuestionId = document.getElementById('question');
+        const result = await Swal.fire({
+            title: "Bạn có chắc chắn với đáp án của mình?",
+            text: "Hãy kiểm tra kỹ trước khi xác nhận!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Xác nhận",
+            cancelButtonText: "Hủy",
+        });
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
+        if (questions[index].checkAnswer(answer)) {
+            // Cập nhật điểm số theo mốc câu hỏi
+            currentPoints = questions[index].money;
+            document.getElementById('point').innerHTML = `Điểm: ${currentPoints}`;
+
+            Swal.fire({
+                title: "Bạn đã chọn đúng!",
+                icon: "success"
+            });
+            if (index === 14) {
+                await Swal.fire({
+                    title: "Chúc Mừng Chiến Thắng!",
+                    text: `Bạn đã xuất sắc hoàn thành 15 câu hỏi và giành giải thưởng ${currentPoints}! Bạn là triệu phú thực sự!`,
+                    icon: "success",
+                    confirmButtonText: "Quay về trang chủ",
+                    customClass: {
+                        popup: 'animated tada'
+                    }
+                });
+                timeCount = 1;
+                reload();
+            }
+            next(index);
+            index++;
+            document.getElementById('result').innerHTML = "Bonus: " + (index < questions.length ? questions[index].money : "0 VNĐ");
+            timeCount = 30;
+        } else {
+            Swal.fire({
+                title: "Bạn làm sai mất rồi :(",
+                text: `Bạn đã đạt được ${currentPoints || "0 VNĐ"}.`,
+                icon: "error"
+            }).then(() => {
+                reload();
+            });
+        }
+    }
+
+    function reload() {
+        location.replace("index.html");
+    }
+</script>
+</body>
+</html>

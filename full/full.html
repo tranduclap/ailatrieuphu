@@ -151,6 +151,35 @@
             transform: scale(1.05);
         }
 
+        #endGameButton {
+            width: 350px;
+            height: 60px;
+            margin: 20px auto;
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: linear-gradient(145deg, #ff4444, #b71c1c);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            transition: transform 0.3s ease;
+        }
+
+        #endGameButton:hover {
+            background: linear-gradient(145deg, #ff6666, #d32f2f);
+            transform: scale(1.05);
+        }
+
+        #endGameButton:active {
+            transform: scale(1);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
         @keyframes pulse {
             0% {
                 transform: scale(1);
@@ -197,6 +226,12 @@
                 font-size: 1.5rem;
                 height: 80px;
             }
+
+            #endGameButton {
+                width: 100%;
+                font-size: 1.4rem;
+                height: 50px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -225,6 +260,11 @@
                 height: 70px;
                 font-size: 1.3rem;
             }
+
+            #endGameButton {
+                height: 45px;
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -241,6 +281,7 @@
     <button id="answer_4" class="an_" onclick="checkAnswer('answer_4')">Đáp án D</button>
 </div>
 <div id="result">Bonus: 0</div>
+<button id="endGameButton" onclick="endGame()">Kết thúc cuộc chơi</button>
 
 <script>
     class Question {
@@ -327,6 +368,13 @@
             let getaswId = document.getElementById('answer_' + (i + 1));
             getaswId.innerHTML = question_1.answer[i];
         }
+        // Ẩn nút kết thúc ở câu hỏi cuối (index 14)
+        const endGameButton = document.getElementById('endGameButton');
+        if (questions.indexOf(question_1) === 14) {
+            endGameButton.style.display = 'none';
+        } else {
+            endGameButton.style.display = 'flex';
+        }
     }
 
     let index = 0;
@@ -381,6 +429,27 @@
             }).then(() => {
                 reload();
             });
+        }
+    }
+
+    async function endGame() {
+        const result = await Swal.fire({
+            title: "Bạn có chắc muốn kết thúc cuộc chơi?",
+            text: `Bạn sẽ nhận được phần thưởng ${currentPoints || "0 VNĐ"}.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Xác nhận",
+            cancelButtonText: "Hủy",
+        });
+
+        if (result.isConfirmed) {
+            await Swal.fire({
+                title: "Chúc mừng!",
+                text: `Bạn đã kết thúc cuộc chơi với phần thưởng ${currentPoints || "0 VNĐ"}!`,
+                icon: "success",
+                confirmButtonText: "Quay về trang chủ"
+            });
+            reload();
         }
     }
 

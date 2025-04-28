@@ -320,7 +320,7 @@
             clearInterval(timeID);
             Swal.fire({
                 title: "Hết Thời Gian!",
-                text: "Bạn đã hết thời gian trả lời.",
+                text: "Bạn đã mất hết phần thưởng!",
                 icon: "error"
             }).then(() => {
                 reload();
@@ -424,7 +424,7 @@
         } else {
             Swal.fire({
                 title: "Bạn làm sai mất rồi :(",
-                text: `Bạn đã đạt được ${currentPoints || "0 VNĐ"}.`,
+                text: "Bạn đã mất hết phần thưởng!",
                 icon: "error"
             }).then(() => {
                 reload();
